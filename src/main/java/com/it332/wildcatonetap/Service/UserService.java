@@ -48,8 +48,29 @@ public class UserService {
 	}
 	
 	// Get user by username
+	public UserEntity updateUser(int userId, UserEntity newUserDetails, String currentPassword) {
+		UserEntity user = urepo.findById(userId)
+			.orElseThrow(() -> new NoSuchElementException("User " + userId + " does not exist!"));
+		
+		if (!user.getPassword().equals(currentPassword)) {
+			throw new IllegalArgumentException("Current password is incorrect");
+		}
+		
+		user.setPassword(newUserDetails.getPassword());
+		// Update other fields as necessary
+		if (newUserDetails.getUsername() != null) user.setUsername(newUserDetails.getUsername());
+		if (newUserDetails.getEmail() != null) user.setEmail(newUserDetails.getEmail());
+		
+		return urepo.save(user);
+	}
+
+	public boolean checkPassword(int userId, String currentPassword) {
+		UserEntity user = urepo.findById(userId)
+			.orElseThrow(() -> new NoSuchElementException("User " + userId + " does not exist!"));
+		return user.getPassword().equals(currentPassword);
+	}
+
 	public UserEntity getUserByUsername(String username) {
 		return urepo.findByUsername(username);
 	}
-
 }
