@@ -24,17 +24,25 @@ public class UserEntity {
 	
 	@Column(name = "password")
 	private String password;
-	
+
+	@Column(name = "fullname")
+	private String fullName;
+
+	@Column(name = "idnumber")
+	private String idNumber;
+
 	public UserEntity() {
 		super();
 	}
 	
-	public UserEntity(int userId, String username, String email, String password) {
+	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber) {
 		super();
 		this.userId = userId;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.fullName = fullName;
+		this.idNumber = idNumber;
 	}
 
 	public int getUserId() {
@@ -68,7 +76,21 @@ public class UserEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
 
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+	
 }

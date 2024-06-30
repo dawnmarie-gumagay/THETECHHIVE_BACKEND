@@ -26,30 +26,26 @@ public class UserService {
 	}
 	
 	//U - update a user
-	@SuppressWarnings("finally")
 	public UserEntity updateUser(int userId, UserEntity newUserDetails) {
-		UserEntity user = new UserEntity();
-		try {
-			//search the id number of the handset that will be updated
-			user = urepo.findById(userId).get();
-			
-			//update the record
-			user.setUsername(newUserDetails.getUsername());
-			user.setEmail(newUserDetails.getEmail());
-			user.setPassword(newUserDetails.getPassword());
-		} catch(NoSuchElementException ex) {
-			throw new NoSuchElementException("User " + userId + " does not exist!");
-		
-		} finally {
-			return urepo.save(user);
-		
-		}
-		
-	}
-	
-	// Get user by username
-	public UserEntity getUserByUsername(String username) {
-		return urepo.findByUsername(username);
+		UserEntity user = urepo.findById(userId).orElseThrow(() -> new NoSuchElementException("User " + userId + " not found"));
+
+		 // Update the user details
+		 user.setUsername(newUserDetails.getUsername());
+		 user.setEmail(newUserDetails.getEmail());
+		 user.setPassword(newUserDetails.getPassword());
+		 user.setFullName(newUserDetails.getFullName()); // Set full name
+		 user.setIdNumber(newUserDetails.getIdNumber()); // Set ID number
+
+		 return urepo.save(user);
 	}
 
+		// Get user by username
+		public UserEntity getUserByUsername(String username) {
+			return urepo.findByUsername(username);
+		}
+
+		// Get user by ID number
+    public UserEntity getUserByIdNumber(String idNumber) {
+			return urepo.findByIdNumber(idNumber);
+	}
 }

@@ -52,5 +52,10 @@ public class UserController {
 		return userv.getUserByUsername(username);
 	}
 	
+	// Get user by ID number
+	@GetMapping("/getByIdNumber")
+	public UserEntity getUserByIdNumber(@RequestParam String idNumber) {
+		return userv.getUserByIdNumber(idNumber);
+	}
 
 }
