@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.it332.wildcatonetap.Entity.UserEntity;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    UserEntity findByUsername(String username);
+public interface UserRepository extends JpaRepository<UserEntity, Integer>{
+	UserEntity findByUsername(String username);
+	UserEntity findByIdNumber(String idNumber);
 }

@@ -79,6 +79,11 @@ public ResponseEntity<?> updateUser(@RequestParam Integer userId,
     }
 }
 	
+	// Get user by ID number
+	@GetMapping("/getByIdNumber")
+	public UserEntity getUserByIdNumber(@RequestParam String idNumber) {
+		return userv.getUserByIdNumber(idNumber);
+	}
 
 
 }
