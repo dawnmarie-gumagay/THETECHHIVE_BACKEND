@@ -26,16 +26,18 @@ public class UserService {
 	}
 	
 	//U - update a user
-	public UserEntity updateUser(int userId, UserEntity newUserDetails) {
+	public UserEntity updateUser(int userId, String newPassword, String currentPassword) {
 		UserEntity user = urepo.findById(userId).orElseThrow(() -> new NoSuchElementException("User " + userId + " not found"));
 
-		 // Update the user details
-		 user.setUsername(newUserDetails.getUsername());
-		 user.setEmail(newUserDetails.getEmail());
-		 user.setPassword(newUserDetails.getPassword());
-		 user.setFullName(newUserDetails.getFullName()); // Set full name
-		 user.setIdNumber(newUserDetails.getIdNumber()); // Set ID number
+		// Validate the current password
+		if (!user.getPassword().equals(currentPassword)) {	
+			throw new IllegalArgumentException("Current password is incorrect.");
+		}
 
+
+		 // Update the user details
+		 user.setPassword(newPassword);
+		 
 		 return urepo.save(user);
 	}
 
