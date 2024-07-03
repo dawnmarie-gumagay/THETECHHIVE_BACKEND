@@ -27,7 +27,8 @@ public class UserService {
 	
 	//U - update a user
 	public UserEntity updateUser(int userId, String newPassword, String currentPassword) {
-		UserEntity user = urepo.findById(userId).orElseThrow(() -> new NoSuchElementException("User " + userId + " not found"));
+		try {
+				UserEntity user = urepo.findById(userId).orElseThrow(() -> new NoSuchElementException("User " + userId + " not found"));
 
 		// Validate the current password
 		if (!user.getPassword().equals(currentPassword)) {	
@@ -39,6 +40,9 @@ public class UserService {
 		 user.setPassword(newPassword);
 		 
 		 return urepo.save(user);
+	} catch (NumberFormatException e) {
+		throw new IllegalArgumentException("Invalid userId format. Please provide a valid integer userId.");
+		}
 	}
 
 		// Get user by username
