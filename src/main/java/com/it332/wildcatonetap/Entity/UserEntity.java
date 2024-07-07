@@ -25,17 +25,37 @@ public class UserEntity {
 	@Column(name = "password")
 	private String password;
 
+	
+
+
+	@Column(name = "fullname")
+    private String fullName;
+
+    @Column(name = "idnumber")
+    private String idNumber;
+    
+    @Column(name = "profilepicture")
+    private String profilePicture;
+
+
+
 	@Column(name = "fullname")
 	private String fullName;
 
 	@Column(name = "idnumber")
 	private String idNumber;
 
+
 	public UserEntity() {
 		super();
 	}
 	
+
+
+	public UserEntity(int userId, String username, String email, String password) {
+
 	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber) {
+
 		super();
 		this.userId = userId;
 		this.username = username;
@@ -44,6 +64,18 @@ public class UserEntity {
 		this.fullName = fullName;
 		this.idNumber = idNumber;
 	}
+
+	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber, String profilePicture) {
+        super();
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.idNumber = idNumber;
+        this.profilePicture = profilePicture;
+    }
+
 
 	public int getUserId() {
 		return userId;
@@ -77,6 +109,15 @@ public class UserEntity {
 		this.password = password;
 	}
 
+	public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+
 	public String getFullName() {
 		return fullName;
 	}
@@ -92,5 +133,5 @@ public class UserEntity {
 	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
 	}
-	
+
 }
