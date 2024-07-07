@@ -35,22 +35,34 @@ public class PostEntity {
 	
 	@Column(name = "dislikes")
 	private int dislikes;
+
+	@Column(name = "fullname")
+    private String fullName;
+    
+    @Column(name = "idnumber")
+    private String idNumber;
+    
+    @Column(name = "profilepicture")
+    private String profilePicture;
 	
 	public PostEntity() {
 		super();
 	}
 
 	public PostEntity(int postId, String content, Date timestamp, int userId, boolean isVerified, int likes,
-			int dislikes) {
-		super();
-		this.postId = postId;
-		this.content = content;
-		this.timestamp = timestamp;
-		this.userId = userId;
-		this.isVerified = isVerified;
-		this.likes = likes;
-		this.dislikes = dislikes;
-	}
+            int dislikes, String fullName, String idNumber, String profilePicture) {
+        super();
+        this.postId = postId;
+        this.content = content;
+        this.timestamp = timestamp;
+        this.userId = userId;
+        this.isVerified = isVerified;
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.fullName = fullName;
+        this.idNumber = idNumber;
+        this.profilePicture = profilePicture;
+    }
 
 	public int getPostId() {
 		return postId;
@@ -108,6 +120,30 @@ public class PostEntity {
 		this.dislikes = dislikes;
 	}
 	
+	public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
 	
 
 }
