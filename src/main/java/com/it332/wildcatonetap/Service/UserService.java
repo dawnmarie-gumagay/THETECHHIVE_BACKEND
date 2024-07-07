@@ -26,49 +26,32 @@ public class UserService {
 	}
 	
 	//U - update a user
-	@SuppressWarnings("finally")
-	public UserEntity updateUser(int userId, UserEntity newUserDetails) {
-		UserEntity user = new UserEntity();
-		try {
-			//search the id number of the handset that will be updated
-			user = urepo.findById(userId).get();
-			
-			//update the record
-			user.setUsername(newUserDetails.getUsername());
-			user.setEmail(newUserDetails.getEmail());
-			user.setPassword(newUserDetails.getPassword());
-		} catch(NoSuchElementException ex) {
-			throw new NoSuchElementException("User " + userId + " does not exist!");
-		
-		} finally {
-			return urepo.save(user);
-		
-		}
-		
-	}
-	
-	// Get user by username
 	public UserEntity updateUser(int userId, String newPassword, String currentPassword) {
-		UserEntity user = urepo.findById(userId)
-			.orElseThrow(() -> new NoSuchElementException("User " + userId + " does not exist!"));
-		
-		if (!user.getPassword().equals(currentPassword)) {
-			throw new IllegalArgumentException("Current password is incorrect");
+		try {
+				UserEntity user = urepo.findById(userId).orElseThrow(() -> new NoSuchElementException("User " + userId + " not found"));
+
+		// Validate the current password
+		if (!user.getPassword().equals(currentPassword)) {	
+			throw new IllegalArgumentException("Current password is incorrect.");
 		}
-		
-		user.setPassword(newPassword);
-		// Update other fields as necessary
-		
-		return urepo.save(user);
+
+
+		 // Update the user details
+		 user.setPassword(newPassword);
+		 
+		 return urepo.save(user);
+	} catch (NumberFormatException e) {
+		throw new IllegalArgumentException("Invalid userId format. Please provide a valid integer userId.");
+		}
 	}
 
-	public boolean checkPassword(int userId, String currentPassword) {
-		UserEntity user = urepo.findById(userId)
-			.orElseThrow(() -> new NoSuchElementException("User " + userId + " does not exist!"));
-		return user.getPassword().equals(currentPassword);
-	}
+		// Get user by username
+		public UserEntity getUserByUsername(String username) {
+			return urepo.findByUsername(username);
+		}
 
-	public UserEntity getUserByUsername(String username) {
-		return urepo.findByUsername(username);
+		// Get user by ID number
+    public UserEntity getUserByIdNumber(String idNumber) {
+			return urepo.findByIdNumber(idNumber);
 	}
 }

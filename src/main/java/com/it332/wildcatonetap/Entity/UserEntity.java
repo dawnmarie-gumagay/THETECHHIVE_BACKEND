@@ -24,9 +24,9 @@ public class UserEntity {
 	
 	@Column(name = "password")
 	private String password;
-<<<<<<< Updated upstream
+
 	
-=======
+
 
 	@Column(name = "fullname")
     private String fullName;
@@ -37,20 +37,34 @@ public class UserEntity {
     @Column(name = "profilepicture")
     private String profilePicture;
 
->>>>>>> Stashed changes
+
+
+	@Column(name = "fullname")
+	private String fullName;
+
+	@Column(name = "idnumber")
+	private String idNumber;
+
+
 	public UserEntity() {
 		super();
 	}
 	
-<<<<<<< Updated upstream
+
+
 	public UserEntity(int userId, String username, String email, String password) {
+
+	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber) {
+
 		super();
 		this.userId = userId;
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.fullName = fullName;
+		this.idNumber = idNumber;
 	}
-=======
+
 	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber, String profilePicture) {
         super();
         this.userId = userId;
@@ -61,7 +75,7 @@ public class UserEntity {
         this.idNumber = idNumber;
         this.profilePicture = profilePicture;
     }
->>>>>>> Stashed changes
+
 
 	public int getUserId() {
 		return userId;
@@ -94,11 +108,7 @@ public class UserEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-<<<<<<< Updated upstream
-	
 
-=======
 	public String getProfilePicture() {
         return profilePicture;
     }
@@ -106,5 +116,22 @@ public class UserEntity {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
->>>>>>> Stashed changes
+
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+
 }
