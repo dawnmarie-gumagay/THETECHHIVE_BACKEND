@@ -50,19 +50,19 @@ public class PostEntity {
 	}
 
 	public PostEntity(int postId, String content, Date timestamp, int userId, boolean isVerified, int likes,
-            int dislikes, String fullName, String idNumber, String profilePicture) {
-        super();
-        this.postId = postId;
-        this.content = content;
-        this.timestamp = timestamp;
-        this.userId = userId;
-        this.isVerified = isVerified;
-        this.likes = likes;
-        this.dislikes = dislikes;
-        this.fullName = fullName;
-        this.idNumber = idNumber;
-        this.profilePicture = profilePicture;
-    }
+	int dislikes, String fullName, String idNumber, String profilePicture) {
+super();
+this.postId = postId;
+this.content = content;
+this.timestamp = timestamp;
+this.userId = userId;
+this.isVerified = isVerified;
+this.likes = likes;
+this.dislikes = dislikes;
+this.fullName = fullName;
+this.idNumber = idNumber;
+this.profilePicture = profilePicture;
+}
 
 	public int getPostId() {
 		return postId;

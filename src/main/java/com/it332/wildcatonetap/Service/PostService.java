@@ -32,7 +32,7 @@ public class PostService {
 		return postRepository.findById(postId);
 	}
 	
-	 public PostEntity createPost(PostEntity post) {
+	public PostEntity createPost(PostEntity post) {
         UserEntity user = userRepository.findById(post.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         post.setFullName(user.getFullName());
         post.setIdNumber(user.getIdNumber());
