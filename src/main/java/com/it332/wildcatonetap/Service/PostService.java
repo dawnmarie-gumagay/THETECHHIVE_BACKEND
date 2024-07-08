@@ -33,13 +33,15 @@ public class PostService {
 	}
 	
 	public PostEntity createPost(PostEntity post) {
-        UserEntity user = userRepository.findById(post.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
-        post.setFullName(user.getFullName());
-        post.setIdNumber(user.getIdNumber());
-        post.setProfilePicture(user.getProfilePicture());
-        return postRepository.save(post);
-    }
-	
+		System.out.println("Creating post: " + post);
+		UserEntity user = userRepository.findById(post.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+		post.setFullName(user.getFullName());
+		post.setIdNumber(user.getIdNumber());
+		post.setProfilePicture(user.getProfilePicture());
+		PostEntity savedPost = postRepository.save(post);
+		System.out.println("Saved post: " + savedPost);
+		return savedPost;
+	}
 	public PostEntity updatePost(int postId, PostEntity postDetails) {
 		PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
 		post.setContent(postDetails.getContent());

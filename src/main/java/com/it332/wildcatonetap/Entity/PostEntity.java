@@ -15,7 +15,6 @@ public class PostEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private int postId;
 	
 	@Column(name = "content")
@@ -44,25 +43,30 @@ public class PostEntity {
     
     @Column(name = "profilepicture")
     private String profilePicture;
+    
+	@Column(name = "image", columnDefinition = "LONGTEXT")
+	private String image;
+	
 	
 	public PostEntity() {
 		super();
 	}
 
 	public PostEntity(int postId, String content, Date timestamp, int userId, boolean isVerified, int likes,
-	int dislikes, String fullName, String idNumber, String profilePicture) {
-super();
-this.postId = postId;
-this.content = content;
-this.timestamp = timestamp;
-this.userId = userId;
-this.isVerified = isVerified;
-this.likes = likes;
-this.dislikes = dislikes;
-this.fullName = fullName;
-this.idNumber = idNumber;
-this.profilePicture = profilePicture;
-}
+	                  int dislikes, String fullName, String idNumber, String profilePicture, String image) {
+        super();
+        this.postId = postId;
+        this.content = content;
+        this.timestamp = timestamp;
+        this.userId = userId;
+        this.isVerified = isVerified;
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.fullName = fullName;
+        this.idNumber = idNumber;
+        this.profilePicture = profilePicture;
+        this.image = image;
+    }
 
 	public int getPostId() {
 		return postId;
@@ -144,6 +148,28 @@ this.profilePicture = profilePicture;
         this.profilePicture = profilePicture;
     }
 
-	
+    public String getImage() {
+        return image;
+    }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "PostEntity{" +
+                "postId=" + postId +
+                ", content='" + content + '\'' +
+                ", timestamp=" + timestamp +
+                ", userId=" + userId +
+                ", isVerified=" + isVerified +
+                ", likes=" + likes +
+                ", dislikes=" + dislikes +
+                ", fullName='" + fullName + '\'' +
+                ", idNumber='" + idNumber + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", image='" + (image != null ? "image present" : "no image") + '\'' +
+                '}';
+    }
 }

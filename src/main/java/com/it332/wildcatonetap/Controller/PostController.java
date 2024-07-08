@@ -37,10 +37,14 @@ public class PostController {
 	}
 	
 	@PostMapping("/add")
-    public ResponseEntity<PostEntity> addPost(@RequestBody PostEntity post) {
-        PostEntity newPost = postService.createPost(post);
-        return ResponseEntity.ok(newPost);
-    }
+public ResponseEntity<PostEntity> addPost(@RequestBody PostEntity post) {
+    System.out.println("Received post: " + post);
+    System.out.println("Received image: " + (post.getImage() != null ? "image present" : "no image"));
+    PostEntity newPost = postService.createPost(post);
+    System.out.println("Created post: " + newPost);
+    return ResponseEntity.ok(newPost);
+}
+
 	
 	@PutMapping("/{postId}")
 	public PostEntity updatePost(@PathVariable int postId, @RequestBody PostEntity postDetails) {
