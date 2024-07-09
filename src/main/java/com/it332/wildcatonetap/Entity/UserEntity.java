@@ -31,6 +31,9 @@ public class UserEntity {
 	@Column(name = "idnumber")
 	private String idNumber;
 
+	@Column(name = "profilepicture")
+    private String profilePicture;
+
 	public UserEntity() {
 		super();
 	}
@@ -43,6 +46,7 @@ public class UserEntity {
 		this.password = password;
 		this.fullName = fullName;
 		this.idNumber = idNumber;
+		this.profilePicture = profilePicture;
 	}
 
 	public int getUserId() {
@@ -92,5 +96,13 @@ public class UserEntity {
 	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
 	}
+
+	public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 	
 }

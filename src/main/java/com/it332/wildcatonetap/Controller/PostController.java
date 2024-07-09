@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,9 +37,14 @@ public class PostController {
 	}
 	
 	@PostMapping("/add")
-	public PostEntity addPost(@RequestBody PostEntity post) {
-		return postService.createPost(post);
-	}
+public ResponseEntity<PostEntity> addPost(@RequestBody PostEntity post) {
+    System.out.println("Received post: " + post);
+    System.out.println("Received image: " + (post.getImage() != null ? "image present" : "no image"));
+    PostEntity newPost = postService.createPost(post);
+    System.out.println("Created post: " + newPost);
+    return ResponseEntity.ok(newPost);
+}
+
 	
 	@PutMapping("/{postId}")
 	public PostEntity updatePost(@PathVariable int postId, @RequestBody PostEntity postDetails) {
@@ -51,13 +57,15 @@ public class PostController {
 	}
 	
 	@PostMapping("/{postId}/like")
-	public void incrementLikes(@PathVariable int postId) {
-		postService.incrementLikes(postId);
-	}
-	
-	@PostMapping("/{postId}/dislike")
-	public void incrementDislikes(@PathVariable int postId) {
-		postService.incrementDislikes(postId);
-	}
+    public ResponseEntity<PostEntity> incrementLikes(@PathVariable int postId) {
+        PostEntity updatedPost = postService.incrementLikes(postId);
+        return ResponseEntity.ok(updatedPost);
+    }
+    
+    @PostMapping("/{postId}/dislike")
+    public ResponseEntity<PostEntity> incrementDislikes(@PathVariable int postId) {
+        PostEntity updatedPost = postService.incrementDislikes(postId);
+        return ResponseEntity.ok(updatedPost);
+    }
 
 }

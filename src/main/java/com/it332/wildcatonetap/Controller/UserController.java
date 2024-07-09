@@ -22,38 +22,43 @@ import com.it332.wildcatonetap.Service.UserService;
 @RequestMapping("/user")
 @CrossOrigin(origins = ("http://localhost:3000"))
 public class UserController {
-	
+
+    @Autowired
+    UserService userv;
+
 	@Autowired
-	UserService userv;
+    UserService userService;
+
 	
-	@GetMapping("/print")
-	public String itWorks() {
-		return "It works";
-	}
-	
-	//Create
-	@PostMapping("/insertUser")
-	public UserEntity insertUser(@RequestBody UserEntity user) {
-		return userv.insertUser(user);
-	}
-	
-	//Read
-	@GetMapping("/getAllUsers")
-	public List<UserEntity> getAllUsers() {
-		return userv.getAllUsers();
-	}
-	
-	//U - Update a user record
-	@PutMapping("/updateUser")
+
+    @GetMapping("/print")
+    public String itWorks() {
+        return "It works";
+    }
+
+    //Create
+    @PostMapping("/insertUser")
+    public UserEntity insertUser(@RequestBody UserEntity user) {
+        return userv.insertUser(user);
+    }
+
+    //Read
+    @GetMapping("/getAllUsers")
+    public List<UserEntity> getAllUsers() {
+        return userv.getAllUsers();
+    }
+
+    //U - Update a user record
+    @PutMapping("/updateUser")
 public ResponseEntity<?> updateUser(@RequestParam Integer userId, 
                                     @RequestBody Map<String, String> requestBody) {
     System.out.println("Received update request:");
     System.out.println("userId: " + userId);
     System.out.println("requestBody: " + requestBody);
-    
+
     String currentPassword = requestBody.get("currentPassword");
     String newPassword = requestBody.get("password");
-    
+
     try {
         UserEntity updatedUser = userv.updateUser(userId, newPassword, currentPassword);
         return ResponseEntity.ok(updatedUser);
@@ -63,27 +68,16 @@ public ResponseEntity<?> updateUser(@RequestParam Integer userId,
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
-	// Get user by username
-	@GetMapping("/getByUsername")
-	public ResponseEntity<?> getUserByUsername(@RequestParam String username) {
-		try {
-			UserEntity user = userv.getUserByUsername(username);
-			if (user == null) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body("User not found with username: " + username);
-			}
-			return ResponseEntity.ok(user);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body("An error occurred while fetching the user: " + e.getMessage());
-    }
-}
-	
-	// Get user by ID number
-	@GetMapping("/getByIdNumber")
-	public UserEntity getUserByIdNumber(@RequestParam String idNumber) {
-		return userv.getUserByIdNumber(idNumber);
-	}
+   
 
+    // Get user by ID number
+    @GetMapping("/getByUsername")
+    public ResponseEntity<UserEntity> getUserByUsername(@RequestParam String username) {
+        UserEntity user = userService.getUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
+    }
 
 }

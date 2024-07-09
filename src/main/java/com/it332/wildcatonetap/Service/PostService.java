@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.it332.wildcatonetap.Entity.PostEntity;
+import com.it332.wildcatonetap.Entity.UserEntity;
 import com.it332.wildcatonetap.Repository.PostRepository;
+import com.it332.wildcatonetap.Repository.UserRepository;
 
 @Service
 public class PostService {
@@ -15,18 +17,31 @@ public class PostService {
 	@Autowired
 	private PostRepository postRepository;
 	
-	public List<PostEntity> getAllPosts() {
-		return postRepository.findAll();
-	}
+	@Autowired
+    private UserRepository userRepository;
+    
+    public List<PostEntity> getAllPosts() {
+        return postRepository.findAll();
+    }
+
+	public UserEntity getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 	
 	public Optional<PostEntity> getPostById(int postId) {
 		return postRepository.findById(postId);
 	}
 	
 	public PostEntity createPost(PostEntity post) {
-		return postRepository.save(post);
+		System.out.println("Creating post: " + post);
+		UserEntity user = userRepository.findById(post.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+		post.setFullName(user.getFullName());
+		post.setIdNumber(user.getIdNumber());
+		post.setProfilePicture(user.getProfilePicture());
+		PostEntity savedPost = postRepository.save(post);
+		System.out.println("Saved post: " + savedPost);
+		return savedPost;
 	}
-	
 	public PostEntity updatePost(int postId, PostEntity postDetails) {
 		PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
 		post.setContent(postDetails.getContent());
@@ -42,16 +57,16 @@ public class PostService {
 		postRepository.deleteById(postId);
 	}
 	
-	public void incrementLikes(int postId) {
-		PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-		post.setLikes(post.getLikes() + 1);
-		postRepository.save(post);
-	}
-	
-	public void incrementDislikes(int postId) {
-		PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-		post.setDislikes(post.getDislikes() + 1);
-		postRepository.save(post);
-	}
+	public PostEntity incrementLikes(int postId) {
+        PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        post.setLikes(post.getLikes() + 1);
+        return postRepository.save(post);
+    }
+    
+    public PostEntity incrementDislikes(int postId) {
+        PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        post.setDislikes(post.getDislikes() + 1);
+        return postRepository.save(post);
+    }
 
 }
