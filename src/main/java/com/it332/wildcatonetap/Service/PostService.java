@@ -1,9 +1,11 @@
 package com.it332.wildcatonetap.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import com.it332.wildcatonetap.Entity.CommentEntity;
@@ -43,6 +45,7 @@ public class PostService {
         post.setFullName(user.getFullName());
         post.setIdNumber(user.getIdNumber());
         post.setProfilePicture(user.getProfilePicture());
+        post.setTimestamp(LocalDateTime.now());
         PostEntity savedPost = postRepository.save(post);
         System.out.println("Saved post: " + savedPost);
         return savedPost;
@@ -51,7 +54,7 @@ public class PostService {
     public PostEntity updatePost(int postId, PostEntity postDetails) {
         PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         post.setContent(postDetails.getContent());
-        post.setTimestamp(postDetails.getTimestamp());
+        post.setTimestamp(LocalDateTime.now());
         post.setUserId(postDetails.getUserId());
         post.setVerified(postDetails.isVerified());
         post.setLikes(postDetails.getLikes());
