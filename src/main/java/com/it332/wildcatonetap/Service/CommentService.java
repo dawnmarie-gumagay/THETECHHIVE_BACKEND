@@ -20,6 +20,7 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository;
 
+   
     public List<CommentEntity> getCommentsByPostId(int postId) {
         return commentRepository.findByPostId(postId);
     }
