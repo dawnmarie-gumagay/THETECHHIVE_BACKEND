@@ -1,11 +1,7 @@
 package com.it332.wildcatonetap.Entity;
 
-import java.sql.Date;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-
-import org.springframework.cglib.core.Local;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
