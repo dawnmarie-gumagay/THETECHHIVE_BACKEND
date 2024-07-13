@@ -1,12 +1,14 @@
 package com.it332.wildcatonetap.Entity;
 
-import java.sql.Date;
+
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,7 +23,7 @@ public class CommentEntity {
     private String content;
 
     @Column(name = "timestamp")
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     @Column(name = "postId")
     private int postId;
@@ -37,7 +39,7 @@ public class CommentEntity {
 
     public CommentEntity() {}
 
-    public CommentEntity(int commentId, String content, Date timestamp, int postId, int userId, String fullName, String idNumber) {
+    public CommentEntity(int commentId, String content, LocalDateTime timestamp, int postId, int userId, String fullName, String idNumber) {
         this.commentId = commentId;
         this.content = content;
         this.timestamp = timestamp;
@@ -45,6 +47,13 @@ public class CommentEntity {
         this.userId = userId;
         this.fullName = fullName;
         this.idNumber = idNumber;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.timestamp == null) {
+            this.timestamp = LocalDateTime.now();
+        }
     }
 
     // Getters and setters
@@ -65,11 +74,11 @@ public class CommentEntity {
         this.content = content;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

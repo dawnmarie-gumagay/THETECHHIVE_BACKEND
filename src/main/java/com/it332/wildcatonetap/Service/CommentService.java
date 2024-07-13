@@ -1,5 +1,6 @@
 package com.it332.wildcatonetap.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public class CommentService {
     }
 
     public CommentEntity addComment(CommentEntity comment) {
+        comment.setTimestamp(LocalDateTime.now());
         return commentRepository.save(comment);
     }
 
