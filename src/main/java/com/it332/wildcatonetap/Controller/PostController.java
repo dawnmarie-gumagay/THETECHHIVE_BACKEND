@@ -57,26 +57,22 @@ public class PostController {
         postService.deletePost(postId);
     }
     
-  @PostMapping("/{postId}/like")
-public ResponseEntity<PostEntity> toggleLike(@PathVariable int postId, @RequestParam int userId) {
-    PostEntity updatedPost = postService.toggleLike(postId, userId);
-    return ResponseEntity.ok(updatedPost);
-}
+    @PostMapping("/{postId}/react")
+    public ResponseEntity<PostEntity> toggleReaction(
+            @PathVariable int postId,
+            @RequestParam int userId,
+            @RequestParam String reactionType) {
+        PostEntity updatedPost = postService.toggleReaction(postId, userId, reactionType);
+        return ResponseEntity.ok(updatedPost);
+    }
 
-@PostMapping("/{postId}/dislike")
-public ResponseEntity<PostEntity> toggleDislike(@PathVariable int postId, @RequestParam int userId) {
-    PostEntity updatedPost = postService.toggleDislike(postId, userId);
-    return ResponseEntity.ok(updatedPost);
-}
-
-    // New endpoints for comment functionality
-	@GetMapping("/{postId}/comments")
+    @GetMapping("/{postId}/comments")
     public ResponseEntity<List<CommentEntity>> getCommentsByPostId(@PathVariable int postId) {
         List<CommentEntity> comments = postService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 
-      @PostMapping("/{postId}/comments")
+    @PostMapping("/{postId}/comments")
     public ResponseEntity<CommentEntity> addComment(@PathVariable int postId, @RequestBody CommentEntity comment) {
         CommentEntity newComment = postService.addComment(comment, postId);
         return ResponseEntity.ok(newComment);
