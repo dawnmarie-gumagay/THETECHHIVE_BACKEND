@@ -1,7 +1,7 @@
 package com.it332.wildcatonetap.Entity;
 
-import java.sql.Date;
 
+import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +21,7 @@ public class PostEntity {
 	private String content;
 	
 	@Column(name = "timestamp")
-	private Date timestamp;
+	private LocalDateTime timestamp;
 	
 	@Column(name = "userid")
 	private int userId;
@@ -52,7 +52,7 @@ public class PostEntity {
 		super();
 	}
 
-	public PostEntity(int postId, String content, Date timestamp, int userId, boolean isVerified, int likes,
+	public PostEntity(int postId, String content, LocalDateTime timestamp, int userId, boolean isVerified, int likes,
 	                  int dislikes, String fullName, String idNumber, String profilePicture, String image) {
         super();
         this.postId = postId;
@@ -84,11 +84,11 @@ public class PostEntity {
 		this.content = content;
 	}
 
-	public Date getTimestamp() {
+	public LocalDateTime getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Date timestamp) {
+	public void setTimestamp(LocalDateTime timestamp) {
 		this.timestamp = timestamp;
 	}
 

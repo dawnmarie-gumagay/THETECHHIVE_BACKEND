@@ -38,16 +38,16 @@ public class UserEntity {
 		super();
 	}
 	
-	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber) {
-		super();
-		this.userId = userId;
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.fullName = fullName;
-		this.idNumber = idNumber;
-		this.profilePicture = profilePicture;
-	}
+	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber, String profilePicture) {
+    super();
+    this.userId = userId;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.fullName = fullName;
+    this.idNumber = idNumber;
+    this.profilePicture = profilePicture;
+}
 
 	public int getUserId() {
 		return userId;
@@ -99,10 +99,10 @@ public class UserEntity {
 
 	public String getProfilePicture() {
         return profilePicture;
-    }
+  }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
-    }
+  public void setProfilePicture(String profilePicture) {
+    this.profilePicture = profilePicture;
+  }
 	
 }

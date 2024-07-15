@@ -15,48 +15,48 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.it332.wildcatonetap.Entity.CommentEntity;
 import com.it332.wildcatonetap.Entity.PostEntity;
 import com.it332.wildcatonetap.Service.PostService;
 
 @RestController
 @RequestMapping("/posts")
-@CrossOrigin(origins = ("http://localhost:3000"))
+@CrossOrigin(origins = "http://localhost:3000")
 public class PostController {
-	
-	@Autowired
-	private PostService postService;
-	
-	@GetMapping
-	public List<PostEntity> getAllPosts() {
-		return postService.getAllPosts();
-	}
-	
-	@GetMapping("/{postId}")
-	public Optional<PostEntity> getPostById(@PathVariable int postId) {
-		return postService.getPostById(postId);
-	}
-	
-	@PostMapping("/add")
-public ResponseEntity<PostEntity> addPost(@RequestBody PostEntity post) {
-    System.out.println("Received post: " + post);
-    System.out.println("Received image: " + (post.getImage() != null ? "image present" : "no image"));
-    PostEntity newPost = postService.createPost(post);
-    System.out.println("Created post: " + newPost);
-    return ResponseEntity.ok(newPost);
-}
-
-	
-	@PutMapping("/{postId}")
-	public PostEntity updatePost(@PathVariable int postId, @RequestBody PostEntity postDetails) {
-		return postService.updatePost(postId, postDetails);
-	}
-	
-	@DeleteMapping("/{postId}")
-	public void deletePost(@PathVariable int postId) {
-		postService.deletePost(postId);
-	}
-	
-	@PostMapping("/{postId}/like")
+    
+    @Autowired
+    private PostService postService;
+    
+    @GetMapping
+    public List<PostEntity> getAllPosts() {
+        return postService.getAllPosts();
+    }
+    
+    @GetMapping("/{postId}")
+    public Optional<PostEntity> getPostById(@PathVariable int postId) {
+        return postService.getPostById(postId);
+    }
+    
+    @PostMapping("/add")
+    public ResponseEntity<PostEntity> addPost(@RequestBody PostEntity post) {
+        System.out.println("Received post: " + post);
+        System.out.println("Received image: " + (post.getImage() != null ? "image present" : "no image"));
+        PostEntity newPost = postService.createPost(post);
+        System.out.println("Created post: " + newPost);
+        return ResponseEntity.ok(newPost);
+    }
+    
+    @PutMapping("/{postId}")
+    public PostEntity updatePost(@PathVariable int postId, @RequestBody PostEntity postDetails) {
+        return postService.updatePost(postId, postDetails);
+    }
+    
+    @DeleteMapping("/{postId}")
+    public void deletePost(@PathVariable int postId) {
+        postService.deletePost(postId);
+    }
+    
+    @PostMapping("/{postId}/like")
     public ResponseEntity<PostEntity> incrementLikes(@PathVariable int postId) {
         PostEntity updatedPost = postService.incrementLikes(postId);
         return ResponseEntity.ok(updatedPost);
@@ -68,4 +68,16 @@ public ResponseEntity<PostEntity> addPost(@RequestBody PostEntity post) {
         return ResponseEntity.ok(updatedPost);
     }
 
+    // New endpoints for comment functionality
+	@GetMapping("/{postId}/comments")
+    public ResponseEntity<List<CommentEntity>> getCommentsByPostId(@PathVariable int postId) {
+        List<CommentEntity> comments = postService.getCommentsByPostId(postId);
+        return ResponseEntity.ok(comments);
+    }
+
+      @PostMapping("/{postId}/comments")
+    public ResponseEntity<CommentEntity> addComment(@PathVariable int postId, @RequestBody CommentEntity comment) {
+        CommentEntity newComment = postService.addComment(comment, postId);
+        return ResponseEntity.ok(newComment);
+    }
 }
