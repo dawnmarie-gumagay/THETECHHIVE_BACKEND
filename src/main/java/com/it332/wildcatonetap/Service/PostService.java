@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.it332.wildcatonetap.Entity.CommentEntity;
 import com.it332.wildcatonetap.Entity.PostEntity;
 import com.it332.wildcatonetap.Entity.UserEntity;
@@ -64,15 +65,41 @@ public class PostService {
         postRepository.deleteById(postId);
     }
     
-    public PostEntity incrementLikes(int postId) {
-        PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-        post.setLikes(post.getLikes() + 1);
+    public PostEntity toggleLike(int postId, int userId) {
+        PostEntity post = postRepository.findById(postId)
+            .orElseThrow(() -> new RuntimeException("Post not found"));
+        
+        if (post.getLikedBy().contains(userId)) {
+            post.getLikedBy().remove(userId);
+            post.setLikes(post.getLikes() - 1);
+        } else {
+            post.getLikedBy().add(userId);
+            post.setLikes(post.getLikes() + 1);
+            if (post.getDislikedBy().contains(userId)) {
+                post.getDislikedBy().remove(userId);
+                post.setDislikes(post.getDislikes() - 1);
+            }
+        }
+        
         return postRepository.save(post);
     }
     
-    public PostEntity incrementDislikes(int postId) {
-        PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-        post.setDislikes(post.getDislikes() + 1);
+    public PostEntity toggleDislike(int postId, int userId) {
+        PostEntity post = postRepository.findById(postId)
+            .orElseThrow(() -> new RuntimeException("Post not found"));
+        
+        if (post.getDislikedBy().contains(userId)) {
+            post.getDislikedBy().remove(userId);
+            post.setDislikes(post.getDislikes() - 1);
+        } else {
+            post.getDislikedBy().add(userId);
+            post.setDislikes(post.getDislikes() + 1);
+            if (post.getLikedBy().contains(userId)) {
+                post.getLikedBy().remove(userId);
+                post.setLikes(post.getLikes() - 1);
+            }
+        }
+        
         return postRepository.save(post);
     }
 
