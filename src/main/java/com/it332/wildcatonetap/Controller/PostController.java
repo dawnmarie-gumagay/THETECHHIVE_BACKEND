@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it332.wildcatonetap.Entity.CommentEntity;
@@ -56,17 +57,17 @@ public class PostController {
         postService.deletePost(postId);
     }
     
-    @PostMapping("/{postId}/like")
-    public ResponseEntity<PostEntity> incrementLikes(@PathVariable int postId) {
-        PostEntity updatedPost = postService.incrementLikes(postId);
-        return ResponseEntity.ok(updatedPost);
-    }
-    
-    @PostMapping("/{postId}/dislike")
-    public ResponseEntity<PostEntity> incrementDislikes(@PathVariable int postId) {
-        PostEntity updatedPost = postService.incrementDislikes(postId);
-        return ResponseEntity.ok(updatedPost);
-    }
+  @PostMapping("/{postId}/like")
+public ResponseEntity<PostEntity> toggleLike(@PathVariable int postId, @RequestParam int userId) {
+    PostEntity updatedPost = postService.toggleLike(postId, userId);
+    return ResponseEntity.ok(updatedPost);
+}
+
+@PostMapping("/{postId}/dislike")
+public ResponseEntity<PostEntity> toggleDislike(@PathVariable int postId, @RequestParam int userId) {
+    PostEntity updatedPost = postService.toggleDislike(postId, userId);
+    return ResponseEntity.ok(updatedPost);
+}
 
     // New endpoints for comment functionality
 	@GetMapping("/{postId}/comments")
