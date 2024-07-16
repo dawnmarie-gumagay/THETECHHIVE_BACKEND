@@ -56,6 +56,8 @@ public class PostService {
         post.setTimestamp(LocalDateTime.now());
         post.setUserId(postDetails.getUserId());
         post.setVerified(postDetails.isVerified());
+        post.setLikes(postDetails.getLikes());
+        post.setDislikes(postDetails.getDislikes());
         return postRepository.save(post);
     }
     
@@ -63,22 +65,45 @@ public class PostService {
         postRepository.deleteById(postId);
     }
     
-    public PostEntity toggleReaction(int postId, int userId, String reactionType) {
+    public PostEntity toggleLike(int postId, int userId) {
         PostEntity post = postRepository.findById(postId)
             .orElseThrow(() -> new RuntimeException("Post not found"));
         
-        if (post.getReactions().containsKey(userId) && post.getReactions().get(userId).equals(reactionType)) {
-            // Remove reaction if it's the same
-            post.getReactions().remove(userId);
+        if (post.getLikedBy().contains(userId)) {
+            post.getLikedBy().remove(userId);
+            post.setLikes(post.getLikes() - 1);
         } else {
-            // Add or update reaction
-            post.getReactions().put(userId, reactionType);
+            post.getLikedBy().add(userId);
+            post.setLikes(post.getLikes() + 1);
+            if (post.getDislikedBy().contains(userId)) {
+                post.getDislikedBy().remove(userId);
+                post.setDislikes(post.getDislikes() - 1);
+            }
+        }
+        
+        return postRepository.save(post);
+    }
+    
+    public PostEntity toggleDislike(int postId, int userId) {
+        PostEntity post = postRepository.findById(postId)
+            .orElseThrow(() -> new RuntimeException("Post not found"));
+        
+        if (post.getDislikedBy().contains(userId)) {
+            post.getDislikedBy().remove(userId);
+            post.setDislikes(post.getDislikes() - 1);
+        } else {
+            post.getDislikedBy().add(userId);
+            post.setDislikes(post.getDislikes() + 1);
+            if (post.getLikedBy().contains(userId)) {
+                post.getLikedBy().remove(userId);
+                post.setLikes(post.getLikes() - 1);
+            }
         }
         
         return postRepository.save(post);
     }
 
-    // Methods for comment functionality
+    // New methods for comment functionality
     public List<CommentEntity> getCommentsByPostId(int postId) {
         return commentRepository.findByPostId(postId);
     }
@@ -89,6 +114,4 @@ public class PostService {
         comment.setPostId(postId);
         return commentRepository.save(comment);
     }
-
-    // You can add more methods here if needed
 }
