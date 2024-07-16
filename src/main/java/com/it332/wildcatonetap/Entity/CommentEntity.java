@@ -1,5 +1,6 @@
 package com.it332.wildcatonetap.Entity;
 
+
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -112,5 +113,5 @@ public class CommentEntity {
     public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
-
+    
 }
