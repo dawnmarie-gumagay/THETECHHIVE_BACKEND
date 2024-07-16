@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.it332.wildcatonetap.Entity.CommentEntity;
 import com.it332.wildcatonetap.Entity.PostEntity;
@@ -27,7 +28,7 @@ public class PostService {
     private CommentRepository commentRepository;
     
     public List<PostEntity> getAllPosts() {
-        return postRepository.findAll();
+        return postRepository.findByIsDeletedFalse();
     }
 
     public UserEntity getUserByUsername(String username) {
@@ -35,7 +36,7 @@ public class PostService {
     }
     
     public Optional<PostEntity> getPostById(int postId) {
-        return postRepository.findById(postId);
+        return postRepository.findByPostIdAndIsDeletedFalse(postId);
     }
     
     public PostEntity createPost(PostEntity post) {
@@ -45,13 +46,15 @@ public class PostService {
         post.setIdNumber(user.getIdNumber());
         post.setProfilePicture(user.getProfilePicture());
         post.setTimestamp(LocalDateTime.now());
+        post.setDeleted(false);
         PostEntity savedPost = postRepository.save(post);
         System.out.println("Saved post: " + savedPost);
         return savedPost;
     }
 
     public PostEntity updatePost(int postId, PostEntity postDetails) {
-        PostEntity post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        PostEntity post = postRepository.findByPostIdAndIsDeletedFalse(postId)
+            .orElseThrow(() -> new RuntimeException("Post not found"));
         post.setContent(postDetails.getContent());
         post.setTimestamp(LocalDateTime.now());
         post.setUserId(postDetails.getUserId());
@@ -61,12 +64,16 @@ public class PostService {
         return postRepository.save(post);
     }
     
-    public void deletePost(int postId) {
-        postRepository.deleteById(postId);
+    @Transactional
+    public void softDeletePost(int postId) {
+        PostEntity post = postRepository.findById(postId)
+            .orElseThrow(() -> new RuntimeException("Post not found"));
+        post.setDeleted(true);
+        postRepository.save(post);
     }
     
     public PostEntity toggleLike(int postId, int userId) {
-        PostEntity post = postRepository.findById(postId)
+        PostEntity post = postRepository.findByPostIdAndIsDeletedFalse(postId)
             .orElseThrow(() -> new RuntimeException("Post not found"));
         
         if (post.getLikedBy().contains(userId)) {
@@ -85,7 +92,7 @@ public class PostService {
     }
     
     public PostEntity toggleDislike(int postId, int userId) {
-        PostEntity post = postRepository.findById(postId)
+        PostEntity post = postRepository.findByPostIdAndIsDeletedFalse(postId)
             .orElseThrow(() -> new RuntimeException("Post not found"));
         
         if (post.getDislikedBy().contains(userId)) {
@@ -103,13 +110,12 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    // New methods for comment functionality
     public List<CommentEntity> getCommentsByPostId(int postId) {
         return commentRepository.findByPostId(postId);
     }
 
     public CommentEntity addComment(CommentEntity comment, int postId) {
-        PostEntity post = postRepository.findById(postId)
+        PostEntity post = postRepository.findByPostIdAndIsDeletedFalse(postId)
             .orElseThrow(() -> new RuntimeException("Post not found"));
         comment.setPostId(postId);
         return commentRepository.save(comment);

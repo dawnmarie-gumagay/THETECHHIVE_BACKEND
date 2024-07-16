@@ -1,6 +1,5 @@
 package com.it332.wildcatonetap.Entity;
 
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +18,7 @@ import jakarta.persistence.Table;
 @Table(name = "tblpost")
 public class PostEntity {
 	
-	 @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int postId;
     
@@ -63,6 +62,9 @@ public class PostEntity {
     @Column(name = "user_id")
     private Set<Integer> dislikedBy = new HashSet<>();
     
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+    
     public PostEntity() {
         super();
     }
@@ -83,64 +85,63 @@ public class PostEntity {
         this.image = image;
     }
 
+    public int getPostId() {
+        return postId;
+    }
 
-	public int getPostId() {
-		return postId;
-	}
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
 
-	public void setPostId(int postId) {
-		this.postId = postId;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 
-	public LocalDateTime getTimestamp() {
-		return timestamp;
-	}
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public void setTimestamp(LocalDateTime timestamp) {
-		this.timestamp = timestamp;
-	}
+    public int getUserId() {
+        return userId;
+    }
 
-	public int getUserId() {
-		return userId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public boolean isVerified() {
+        return isVerified;
+    }
 
-	public boolean isVerified() {
-		return isVerified;
-	}
+    public void setVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
 
-	public void setVerified(boolean isVerified) {
-		this.isVerified = isVerified;
-	}
+    public int getLikes() {
+        return likes;
+    }
 
-	public int getLikes() {
-		return likes;
-	}
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
 
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
+    public int getDislikes() {
+        return dislikes;
+    }
 
-	public int getDislikes() {
-		return dislikes;
-	}
-
-	public void setDislikes(int dislikes) {
-		this.dislikes = dislikes;
-	}
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
+    }
 	
-	public String getFullName() {
+    public String getFullName() {
         return fullName;
     }
 
@@ -171,7 +172,8 @@ public class PostEntity {
     public void setImage(String image) {
         this.image = image;
     }
-	public Set<Integer> getLikedBy() {
+
+    public Set<Integer> getLikedBy() {
         return likedBy;
     }
 
@@ -185,6 +187,14 @@ public class PostEntity {
 
     public void setDislikedBy(Set<Integer> dislikedBy) {
         this.dislikedBy = dislikedBy;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 
     @Override
@@ -203,6 +213,7 @@ public class PostEntity {
                 ", image='" + (image != null ? "image present" : "no image") + '\'' +
                 ", likedBy=" + likedBy +
                 ", dislikedBy=" + dislikedBy +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }
