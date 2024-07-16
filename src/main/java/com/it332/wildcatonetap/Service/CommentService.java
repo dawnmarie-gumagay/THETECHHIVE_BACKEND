@@ -21,14 +21,16 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository;
 
-   
     public List<CommentEntity> getCommentsByPostId(int postId) {
         return commentRepository.findByPostId(postId);
     }
 
     public CommentEntity addComment(CommentEntity comment) {
         comment.setTimestamp(LocalDateTime.now());
-        return commentRepository.save(comment);
+        System.out.println("Saving comment: " + comment);
+        CommentEntity savedComment = commentRepository.save(comment);
+        System.out.println("Saved comment: " + savedComment);
+        return savedComment;
     }
 
     public boolean deleteComment(int commentId, int userId) {
