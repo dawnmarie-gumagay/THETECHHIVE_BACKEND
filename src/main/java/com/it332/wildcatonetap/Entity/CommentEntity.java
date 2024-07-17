@@ -36,6 +36,9 @@ public class CommentEntity {
     @Column(name = "id_number")
     private String idNumber;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+
     // Default constructor
     public CommentEntity() {}
 
@@ -54,8 +57,6 @@ public class CommentEntity {
     public Integer getCommentId() {
         return commentId;
     }
-
-    // We don't provide a setter for commentId as it's auto-generated
 
     public String getContent() {
         return content;
@@ -105,6 +106,14 @@ public class CommentEntity {
         this.idNumber = idNumber;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     @Override
     public String toString() {
         return "CommentEntity{" +
@@ -115,6 +124,7 @@ public class CommentEntity {
                 ", userId=" + userId +
                 ", fullName='" + fullName + '\'' +
                 ", idNumber='" + idNumber + '\'' +
+                ", isDeleted=" + isDeleted +
                 '}';
     }
 }

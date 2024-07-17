@@ -22,30 +22,28 @@ public class CommentService {
     private PostRepository postRepository;
 
     public List<CommentEntity> getCommentsByPostId(int postId) {
-        return commentRepository.findByPostId(postId);
+        return commentRepository.findByPostIdAndIsDeletedFalse(postId);
     }
 
     public CommentEntity addComment(CommentEntity comment) {
         comment.setTimestamp(LocalDateTime.now());
-        System.out.println("Saving comment: " + comment);
-        CommentEntity savedComment = commentRepository.save(comment);
-        System.out.println("Saved comment: " + savedComment);
-        return savedComment;
+        return commentRepository.save(comment);
     }
 
-    public boolean deleteComment(int commentId, int userId) {
+    public boolean softDeleteComment(int commentId, int userId) {
         Optional<CommentEntity> commentOpt = commentRepository.findById(commentId);
         
         if (commentOpt.isPresent()) {
             CommentEntity comment = commentOpt.get();
-            Optional<PostEntity> postOpt = postRepository.findById(comment.getPostId());
             
+            Optional<PostEntity> postOpt = postRepository.findById(comment.getPostId());
             if (postOpt.isPresent()) {
                 PostEntity post = postOpt.get();
                 
                 // Check if the user is the comment owner or the post owner
                 if (comment.getUserId() == userId || post.getUserId() == userId) {
-                    commentRepository.deleteById(commentId);
+                    comment.setDeleted(true);
+                    commentRepository.save(comment);
                     return true;
                 }
             }

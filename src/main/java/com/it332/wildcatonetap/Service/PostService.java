@@ -111,7 +111,7 @@ public class PostService {
     }
 
     public List<CommentEntity> getCommentsByPostId(int postId) {
-        return commentRepository.findByPostId(postId);
+        return commentRepository.findByPostIdAndIsDeletedFalse(postId);
     }
 
     public CommentEntity addComment(CommentEntity comment, int postId) {
