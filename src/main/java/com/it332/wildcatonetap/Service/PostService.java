@@ -44,7 +44,6 @@ public class PostService {
         UserEntity user = userRepository.findById(post.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         post.setFullName(user.getFullName());
         post.setIdNumber(user.getIdNumber());
-        post.setProfilePicture(user.getProfilePicture());
         post.setTimestamp(LocalDateTime.now());
         post.setDeleted(false);
         PostEntity savedPost = postRepository.save(post);

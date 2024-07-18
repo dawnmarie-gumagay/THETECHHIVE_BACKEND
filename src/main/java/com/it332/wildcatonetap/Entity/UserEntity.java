@@ -31,14 +31,11 @@ public class UserEntity {
 	@Column(name = "idnumber")
 	private String idNumber;
 
-	@Column(name = "profilepicture")
-    private String profilePicture;
-
 	public UserEntity() {
 		super();
 	}
 	
-	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber, String profilePicture) {
+	public UserEntity(int userId, String username, String email, String password, String fullName, String idNumber) {
     super();
     this.userId = userId;
     this.username = username;
@@ -46,7 +43,6 @@ public class UserEntity {
     this.password = password;
     this.fullName = fullName;
     this.idNumber = idNumber;
-    this.profilePicture = profilePicture;
 }
 
 	public int getUserId() {
@@ -97,12 +93,4 @@ public class UserEntity {
 		this.idNumber = idNumber;
 	}
 
-	public String getProfilePicture() {
-        return profilePicture;
-  }
-
-  public void setProfilePicture(String profilePicture) {
-    this.profilePicture = profilePicture;
-  }
-	
 }
