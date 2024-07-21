@@ -26,7 +26,14 @@ public class EntryController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<EntryEntity> createEntry(@RequestPart("user") String userId, @RequestPart("idNumber") String idNumber, @RequestPart("fullName") String fullName, @RequestPart("level") String level, @RequestPart("type") String type, @RequestPart("photo") MultipartFile photo) throws IOException {
+    public ResponseEntity<EntryEntity> createEntry(
+        @RequestPart("user") String userId, 
+        @RequestPart("idNumber") String idNumber, 
+        @RequestPart("fullName") String fullName, 
+        @RequestPart("level") String level, 
+        @RequestPart("type") String type, 
+        @RequestPart("photo") MultipartFile photo) throws IOException {
+        
         System.out.println("Received userId: " + userId);
         System.out.println("Received idNumber: " + idNumber);
         System.out.println("Received fullName: " + fullName);
