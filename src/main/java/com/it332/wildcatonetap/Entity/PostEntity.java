@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.context.annotation.Profile;
+
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -12,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -46,8 +49,9 @@ public class PostEntity {
     @Column(name = "idnumber")
     private String idNumber;
     
-    @Column(name = "profilepicture")
-    private String profilePicture;
+    @ManyToOne
+    @JoinColumn(name = "profile_id")  // The column in tblpost that refers to tblprofile
+    private ProfileEntity profile;
     
     @Column(name = "image", columnDefinition = "LONGTEXT")
     private String image;
@@ -70,7 +74,7 @@ public class PostEntity {
     }
 
     public PostEntity(int postId, String content, LocalDateTime timestamp, int userId, boolean isVerified, int likes,
-                      int dislikes, String fullName, String idNumber, String profilePicture, String image) {
+                      int dislikes, String fullName, String idNumber, ProfileEntity profile, String image) {
         super();
         this.postId = postId;
         this.content = content;
@@ -81,7 +85,7 @@ public class PostEntity {
         this.dislikes = dislikes;
         this.fullName = fullName;
         this.idNumber = idNumber;
-        this.profilePicture = profilePicture;
+        this.profile = profile;
         this.image = image;
     }
 
@@ -157,12 +161,12 @@ public class PostEntity {
         this.idNumber = idNumber;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public ProfileEntity getProfile() {
+        return profile;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfile(ProfileEntity profile) {
+        this.profile = profile;
     }
 
     public String getImage() {
@@ -209,7 +213,7 @@ public class PostEntity {
                 ", dislikes=" + dislikes +
                 ", fullName='" + fullName + '\'' +
                 ", idNumber='" + idNumber + '\'' +
-                ", profilePicture='" + profilePicture + '\'' +
+                ", profile='" + profile + '\'' +
                 ", image='" + (image != null ? "image present" : "no image") + '\'' +
                 ", likedBy=" + likedBy +
                 ", dislikedBy=" + dislikedBy +
