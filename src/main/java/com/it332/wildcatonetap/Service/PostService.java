@@ -136,6 +136,7 @@ public class PostService {
     }
 
     public CommentEntity addComment(CommentEntity comment, int postId) {
+        @SuppressWarnings("unused")
         PostEntity post = postRepository.findByPostIdAndIsDeletedFalse(postId)
             .orElseThrow(() -> new RuntimeException("Post not found"));
         comment.setPostId(postId);
