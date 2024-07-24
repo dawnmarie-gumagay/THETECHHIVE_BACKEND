@@ -15,7 +15,8 @@ import jakarta.persistence.Table;
 public class ProfileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "profile_id")
+    private int profile_id;
 
     @OneToOne
     @JoinColumn(name = "userId", referencedColumnName = "userId")
@@ -28,18 +29,18 @@ public class ProfileEntity {
     public ProfileEntity() {
     }
 
-    public ProfileEntity(int id, UserEntity user, byte[] profilePicture) {
-        this.id = id;
+    public ProfileEntity(int profile_id, UserEntity user, byte[] profilePicture) {
+        this.profile_id = profile_id;
         this.user = user;
         this.profilePicture = profilePicture;
     }
 
-    public int getId() {
-        return id;
+    public int getProfile_id() {
+        return profile_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setProfile_id(int profile_id) {
+        this.profile_id = profile_id;
     }
 
     public UserEntity getUser() {
