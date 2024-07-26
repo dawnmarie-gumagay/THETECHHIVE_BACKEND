@@ -37,7 +37,7 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<?> deleteComment(@PathVariable int commentId, @RequestParam int userId) {
-        boolean deleted = commentService.deleteComment(commentId, userId);
+        boolean deleted = commentService.softDeleteComment(commentId, userId);
         if (deleted) {
             return ResponseEntity.ok().build();
         } else {

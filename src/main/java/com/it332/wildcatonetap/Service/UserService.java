@@ -54,4 +54,9 @@ public class UserService {
     public UserEntity getUserByIdNumber(String idNumber) {
 			return urepo.findByIdNumber(idNumber);
 	}
+
+	public UserEntity getUserById(Long id) {
+    return urepo.findById(id.intValue())
+        .orElseThrow(() -> new NoSuchElementException("User with id " + id + " not found"));
+}
 }

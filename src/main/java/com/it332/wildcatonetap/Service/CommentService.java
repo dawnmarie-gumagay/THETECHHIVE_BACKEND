@@ -21,9 +21,8 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository;
 
-   
     public List<CommentEntity> getCommentsByPostId(int postId) {
-        return commentRepository.findByPostId(postId);
+        return commentRepository.findByPostIdAndIsDeletedFalse(postId);
     }
 
     public CommentEntity addComment(CommentEntity comment) {
@@ -31,19 +30,20 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public boolean deleteComment(int commentId, int userId) {
+    public boolean softDeleteComment(int commentId, int userId) {
         Optional<CommentEntity> commentOpt = commentRepository.findById(commentId);
         
         if (commentOpt.isPresent()) {
             CommentEntity comment = commentOpt.get();
-            Optional<PostEntity> postOpt = postRepository.findById(comment.getPostId());
             
+            Optional<PostEntity> postOpt = postRepository.findById(comment.getPostId());
             if (postOpt.isPresent()) {
                 PostEntity post = postOpt.get();
                 
                 // Check if the user is the comment owner or the post owner
                 if (comment.getUserId() == userId || post.getUserId() == userId) {
-                    commentRepository.deleteById(commentId);
+                    comment.setDeleted(true);
+                    commentRepository.save(comment);
                     return true;
                 }
             }

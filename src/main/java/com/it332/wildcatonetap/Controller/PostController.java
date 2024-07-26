@@ -34,8 +34,10 @@ public class PostController {
     }
     
     @GetMapping("/{postId}")
-    public Optional<PostEntity> getPostById(@PathVariable int postId) {
-        return postService.getPostById(postId);
+    public ResponseEntity<PostEntity> getPostById(@PathVariable int postId) {
+        Optional<PostEntity> post = postService.getPostById(postId);
+        return post.map(ResponseEntity::ok)
+                   .orElseGet(() -> ResponseEntity.notFound().build());
     }
     
     @PostMapping("/add")
@@ -48,37 +50,58 @@ public class PostController {
     }
     
     @PutMapping("/{postId}")
-    public PostEntity updatePost(@PathVariable int postId, @RequestBody PostEntity postDetails) {
-        return postService.updatePost(postId, postDetails);
+    public ResponseEntity<PostEntity> updatePost(@PathVariable int postId, @RequestBody PostEntity postDetails) {
+        try {
+            PostEntity updatedPost = postService.updatePost(postId, postDetails);
+            return ResponseEntity.ok(updatedPost);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
     
     @DeleteMapping("/{postId}")
-    public void deletePost(@PathVariable int postId) {
-        postService.deletePost(postId);
+    public ResponseEntity<?> deletePost(@PathVariable int postId) {
+        try {
+            postService.softDeletePost(postId);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
     
-  @PostMapping("/{postId}/like")
-public ResponseEntity<PostEntity> toggleLike(@PathVariable int postId, @RequestParam int userId) {
-    PostEntity updatedPost = postService.toggleLike(postId, userId);
-    return ResponseEntity.ok(updatedPost);
-}
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<PostEntity> toggleLike(@PathVariable int postId, @RequestParam int userId) {
+        try {
+            PostEntity updatedPost = postService.toggleLike(postId, userId);
+            return ResponseEntity.ok(updatedPost);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-@PostMapping("/{postId}/dislike")
-public ResponseEntity<PostEntity> toggleDislike(@PathVariable int postId, @RequestParam int userId) {
-    PostEntity updatedPost = postService.toggleDislike(postId, userId);
-    return ResponseEntity.ok(updatedPost);
-}
+    @PostMapping("/{postId}/dislike")
+    public ResponseEntity<PostEntity> toggleDislike(@PathVariable int postId, @RequestParam int userId) {
+        try {
+            PostEntity updatedPost = postService.toggleDislike(postId, userId);
+            return ResponseEntity.ok(updatedPost);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-    // New endpoints for comment functionality
-	@GetMapping("/{postId}/comments")
+    @GetMapping("/{postId}/comments")
     public ResponseEntity<List<CommentEntity>> getCommentsByPostId(@PathVariable int postId) {
         List<CommentEntity> comments = postService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 
-      @PostMapping("/{postId}/comments")
+    @PostMapping("/{postId}/comments")
     public ResponseEntity<CommentEntity> addComment(@PathVariable int postId, @RequestBody CommentEntity comment) {
-        CommentEntity newComment = postService.addComment(comment, postId);
-        return ResponseEntity.ok(newComment);
+        try {
+            CommentEntity newComment = postService.addComment(comment, postId);
+            return ResponseEntity.ok(newComment);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

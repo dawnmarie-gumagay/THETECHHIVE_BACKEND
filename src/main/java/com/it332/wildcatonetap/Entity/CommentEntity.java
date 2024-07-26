@@ -1,6 +1,5 @@
 package com.it332.wildcatonetap.Entity;
 
-
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -8,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,53 +15,47 @@ public class CommentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int commentId;
+    @Column(name = "comment_id")
+    private Integer commentId;
 
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
 
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
 
-    @Column(name = "postId")
+    @Column(name = "post_id", nullable = false)
     private int postId;
 
-    @Column(name = "userId")
+    @Column(name = "user_id", nullable = false)
     private int userId;
 
-    @Column(name = "fullName")
+    @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "idNumber")
+    @Column(name = "id_number")
     private String idNumber;
 
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+
+    // Default constructor
     public CommentEntity() {}
 
-    public CommentEntity(int commentId, String content, LocalDateTime timestamp, int postId, int userId, String fullName, String idNumber) {
-        this.commentId = commentId;
+    // Constructor without commentId
+    public CommentEntity(String content, int postId, int userId, String fullName, String idNumber) {
         this.content = content;
-        this.timestamp = timestamp;
         this.postId = postId;
         this.userId = userId;
         this.fullName = fullName;
         this.idNumber = idNumber;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        if (this.timestamp == null) {
-            this.timestamp = LocalDateTime.now();
-        }
+        this.timestamp = LocalDateTime.now();
     }
 
     // Getters and setters
 
-    public int getCommentId() {
+    public Integer getCommentId() {
         return commentId;
-    }
-
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
     }
 
     public String getContent() {
@@ -113,5 +105,26 @@ public class CommentEntity {
     public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
-    
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentEntity{" +
+                "commentId=" + commentId +
+                ", content='" + content + '\'' +
+                ", timestamp=" + timestamp +
+                ", postId=" + postId +
+                ", userId=" + userId +
+                ", fullName='" + fullName + '\'' +
+                ", idNumber='" + idNumber + '\'' +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }
