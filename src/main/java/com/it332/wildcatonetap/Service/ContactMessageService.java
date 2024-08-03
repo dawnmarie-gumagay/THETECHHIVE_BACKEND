@@ -28,7 +28,7 @@ public class ContactMessageService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(fromEmail);
         mailMessage.setTo("wildcatonetap@gmail.com");
-        mailMessage.setSubject("New Contact Form Submission");
+        mailMessage.setSubject("New Form Submission");
         mailMessage.setText("Name: " + message.getName() + "\n"
                 + "Email: " + message.getEmail() + "\n"
                 + "Phone: " + message.getPhoneNumber() + "\n"
