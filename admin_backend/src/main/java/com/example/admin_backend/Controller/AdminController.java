@@ -26,7 +26,7 @@ import com.example.admin_backend.Service.AdminService;
 public class AdminController {
 
     @Autowired
-    AdminService adminService;
+    private AdminService adminService;
 
     @GetMapping("/print")
     public String itWorks() {
@@ -45,7 +45,7 @@ public class AdminController {
         return adminService.getAllAdmins();
     }
 
-    // U - Update an admin record
+    // Update an admin record
     @PutMapping("/updatePassword")
     public ResponseEntity<?> updatePassword(@RequestParam Integer adminId, 
                                             @RequestBody Map<String, String> requestBody) {
@@ -68,13 +68,13 @@ public class AdminController {
     // Sign-in
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody Map<String, String> loginData) {
-        String email = loginData.get("email");
+        String idNumber = loginData.get("idNumber"); // Changed from email to idNumber
         String password = loginData.get("password");
 
         try {
-            AdminEntity admin = adminService.getAdminByEmailAndPassword(email, password);
+            AdminEntity admin = adminService.getAdminByIdNumberAndPassword(idNumber, password); // Using idNumber instead of email
             if (admin == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid ID Number or password.");
             }
 
             Map<String, Object> response = new HashMap<>();
@@ -92,7 +92,7 @@ public class AdminController {
 
     // Get admin by ID number
     @GetMapping("/getByAdminname")
-    public ResponseEntity<AdminEntity> getAdmineByAdminname(@RequestParam String adminname) {
+    public ResponseEntity<AdminEntity> getAdminByAdminname(@RequestParam String adminname) {
         AdminEntity admin = adminService.getAdminByAdminname(adminname);
         if (admin == null) {
             return ResponseEntity.notFound().build();

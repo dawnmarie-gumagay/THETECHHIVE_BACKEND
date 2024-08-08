@@ -24,7 +24,7 @@ public class CommentEntity {
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
 
-    @Column(name = "postId", nullable = false)
+    @Column(name = "post_id", nullable = false)
     private int postId;
 
     @Column(name = "admin_id", nullable = false)

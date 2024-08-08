@@ -29,37 +29,56 @@ public class PostController {
     private PostService postService;
 
     @GetMapping
-    public List<PostEntity> getAllPosts() {
-        return postService.getAllPosts();
+    public ResponseEntity<?> getAllPosts() {
+        try {
+            List<PostEntity> posts = postService.getAllPosts();
+            System.out.println("Fetched posts: " + posts); // Add this line for logging
+            return ResponseEntity.ok(posts);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching posts: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostEntity> getPostById(@PathVariable int postId) {
-        Optional<PostEntity> post = postService.getPostById(postId);
-        return post.map(ResponseEntity::ok)
-                   .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<?> getPostById(@PathVariable int postId) {
+        try {
+            Optional<PostEntity> post = postService.getPostById(postId);
+            if (post.isPresent()) {
+                return ResponseEntity.ok(post.get());
+            } else {
+                return ResponseEntity.status(404).body("Post not found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching post by ID: " + e.getMessage());
+        }
     }
 
     @PostMapping("/add")
-    public ResponseEntity<PostEntity> addPost(@RequestBody PostEntity post) {
-        System.out.println("Received post: " + post);
-        System.out.println("Received image: " + (post.getImage() != null ? "image present" : "no image"));
-        // Ensure that `content` is not null
-        if (post.getContent() == null || post.getContent().isEmpty()) {
-            return ResponseEntity.badRequest().body(null);
+    public ResponseEntity<?> addPost(@RequestBody PostEntity post) {
+        try {
+            System.out.println("Received post: " + post);
+            System.out.println("Received image: " + (post.getImage() != null ? "image present" : "no image"));
+            PostEntity newPost = postService.createPost(post);
+            System.out.println("Created post: " + newPost);
+            return ResponseEntity.ok(newPost);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error adding post: " + e.getMessage());
         }
-        PostEntity newPost = postService.createPost(post);
-        System.out.println("Created post: " + newPost);
-        return ResponseEntity.ok(newPost);
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<PostEntity> updatePost(@PathVariable int postId, @RequestBody PostEntity postDetails) {
+    public ResponseEntity<?> updatePost(@PathVariable int postId, @RequestBody PostEntity postDetails) {
         try {
             PostEntity updatedPost = postService.updatePost(postId, postDetails);
             return ResponseEntity.ok(updatedPost);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body("Post not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error updating post: " + e.getMessage());
         }
     }
 
@@ -69,43 +88,60 @@ public class PostController {
             postService.softDeletePost(postId);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body("Post not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error deleting post: " + e.getMessage());
         }
     }
 
     @PostMapping("/{postId}/like")
-    public ResponseEntity<PostEntity> toggleLike(@PathVariable int postId, @RequestParam int adminId) {
+    public ResponseEntity<?> toggleLike(@PathVariable int postId, @RequestParam int adminId) {
         try {
             PostEntity updatedPost = postService.toggleLike(postId, adminId);
             return ResponseEntity.ok(updatedPost);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body("Post not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error toggling like: " + e.getMessage());
         }
     }
 
     @PostMapping("/{postId}/dislike")
-    public ResponseEntity<PostEntity> toggleDislike(@PathVariable int postId, @RequestParam int adminId) {
+    public ResponseEntity<?> toggleDislike(@PathVariable int postId, @RequestParam int adminId) {
         try {
             PostEntity updatedPost = postService.toggleDislike(postId, adminId);
             return ResponseEntity.ok(updatedPost);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body("Post not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error toggling dislike: " + e.getMessage());
         }
     }
 
     @GetMapping("/{postId}/comments")
-    public ResponseEntity<List<CommentEntity>> getCommentsByPostId(@PathVariable int postId) {
-        List<CommentEntity> comments = postService.getCommentsByPostId(postId);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<?> getCommentsByPostId(@PathVariable int postId) {
+        try {
+            List<CommentEntity> comments = postService.getCommentsByPostId(postId);
+            return ResponseEntity.ok(comments);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching comments: " + e.getMessage());
+        }
     }
 
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<CommentEntity> addComment(@PathVariable int postId, @RequestBody CommentEntity comment) {
+    public ResponseEntity<?> addComment(@PathVariable int postId, @RequestBody CommentEntity comment) {
         try {
             CommentEntity newComment = postService.addComment(comment, postId);
             return ResponseEntity.ok(newComment);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(404).body("Post not found");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error adding comment: " + e.getMessage());
         }
     }
 }

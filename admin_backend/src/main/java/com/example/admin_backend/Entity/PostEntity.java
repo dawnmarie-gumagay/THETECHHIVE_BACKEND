@@ -18,46 +18,42 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tblpost")
 public class PostEntity {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
     private int postId;
-
-    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
+    
+    @Column(name = "content")
     private String content;
-
-    @Column(name = "timestamp", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = true)
+    
+    @Column(name = "timestamp")
     private LocalDateTime timestamp;
-
-    @Column(name = "admin_id", nullable = false)
+    
+    @Column(name = "adminid")
     private int adminId;
-
-    @Column(name = "is_verified", columnDefinition = "TINYINT(1) DEFAULT 0", nullable = true)
+    
+    @Column(name = "isverified")
     private boolean isVerified;
-
-    @Column(name = "likes", columnDefinition = "INT DEFAULT 0", nullable = true)
+    
+    @Column(name = "likes")
     private int likes;
-
-    @Column(name = "dislikes", columnDefinition = "INT", nullable = true)
+    
+    @Column(name = "dislikes")
     private int dislikes;
 
-    @Column(name = "fullname", nullable = false)
+    @Column(name = "fullname")
     private String fullName;
-
-    @Column(name = "idnumber", length = 50, nullable = true)
+    
+    @Column(name = "idnumber")
     private String idNumber;
-
+    
     @ManyToOne
     @JoinColumn(name = "profile_id")  // The column in tblpost that refers to tblprofile
     private ProfileEntity profile;
-
-    @Column(name = "image", columnDefinition = "LONGTEXT", nullable = true)
+    
+    @Column(name = "image", columnDefinition = "LONGTEXT")
     private String image;
-
-    @Column(name = "is_deleted", columnDefinition = "TINYINT(1) DEFAULT 0", nullable = false)
-    private boolean isDeleted;
-
+    
     @ElementCollection
     @CollectionTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "admin_id")
@@ -67,8 +63,10 @@ public class PostEntity {
     @CollectionTable(name = "post_dislikes", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "admin_id")
     private Set<Integer> dislikedBy = new HashSet<>();
-
-    // Constructors
+    
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
+    
     public PostEntity() {
         super();
     }
@@ -89,7 +87,6 @@ public class PostEntity {
         this.image = image;
     }
 
-    // Getters and Setters
     public int getPostId() {
         return postId;
     }
@@ -145,7 +142,7 @@ public class PostEntity {
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
     }
-
+    
     public String getFullName() {
         return fullName;
     }
@@ -178,14 +175,6 @@ public class PostEntity {
         this.image = image;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
-
     public Set<Integer> getLikedBy() {
         return likedBy;
     }
@@ -202,6 +191,14 @@ public class PostEntity {
         this.dislikedBy = dislikedBy;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     @Override
     public String toString() {
         return "PostEntity{" +
@@ -214,7 +211,7 @@ public class PostEntity {
                 ", dislikes=" + dislikes +
                 ", fullName='" + fullName + '\'' +
                 ", idNumber='" + idNumber + '\'' +
-                ", profile=" + profile +
+                ", profile='" + profile + '\'' +
                 ", image='" + (image != null ? "image present" : "no image") + '\'' +
                 ", likedBy=" + likedBy +
                 ", dislikedBy=" + dislikedBy +

@@ -9,5 +9,5 @@ import com.example.admin_backend.Entity.AdminEntity;
 public interface AdminRepository extends JpaRepository<AdminEntity, Integer> {
     AdminEntity findByAdminname(String adminname);
     AdminEntity findByIdNumber(String idNumber);
-    AdminEntity findByEmail(String email);
+    AdminEntity findByEmailAndPassword(String email, String password);
 }
