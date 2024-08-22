@@ -17,7 +17,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer> {
     // Find a specific post by ID that is not deleted
     Optional<PostEntity> findByPostIdAndIsDeletedFalse(int postId);
 
-    // If you need to find posts by admin ID (and not deleted)
+    // If you need to find posts by user ID (and not deleted)
     List<PostEntity> findByAdminIdAndIsDeletedFalse(int adminId);
 
     // If you need to find posts by content (and not deleted)

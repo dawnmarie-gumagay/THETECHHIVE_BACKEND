@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tblpost")
 public class PostEntity {
-    
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int postId;
@@ -29,7 +29,7 @@ public class PostEntity {
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
     
-    @Column(name = "adminid")
+    @Column(name = "admin_id")
     private int adminId;
     
     @Column(name = "isverified")
@@ -142,7 +142,7 @@ public class PostEntity {
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
     }
-    
+	
     public String getFullName() {
         return fullName;
     }
@@ -211,8 +211,8 @@ public class PostEntity {
                 ", dislikes=" + dislikes +
                 ", fullName='" + fullName + '\'' +
                 ", idNumber='" + idNumber + '\'' +
-                ", profile='" + profile + '\'' +
-                ", image='" + (image != null ? "image present" : "no image") + '\'' +
+                ", profile=" + profile +
+                ", image='" + image + '\'' +
                 ", likedBy=" + likedBy +
                 ", dislikedBy=" + dislikedBy +
                 ", isDeleted=" + isDeleted +
