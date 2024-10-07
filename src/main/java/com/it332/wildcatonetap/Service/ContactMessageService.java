@@ -10,6 +10,7 @@ import com.it332.wildcatonetap.Entity.ContactMessageEntity;
 
 @Service
 public class ContactMessageService {
+
     @Autowired
     private ContactMessageRepository contactMessageRepository;
 
@@ -28,11 +29,20 @@ public class ContactMessageService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(fromEmail);
         mailMessage.setTo("wildcatonetap@gmail.com");
-        mailMessage.setSubject("New Form Submission");
-        mailMessage.setText("Name: " + message.getName() + "\n"
-                + "Email: " + message.getEmail() + "\n"
-                + "Phone: " + message.getPhoneNumber() + "\n"
-                + "Message: " + message.getMessage());
+        mailMessage.setSubject("New Contact Us Submission from " + message.getFullName()); // Use getFullName()
+
+        String emailBody = "Dear Wildcat One Tap Team,\n\n" +
+                           "We have received a new contact form submission from a visitor. Below are the details:\n\n" +
+                           "Name: " + message.getFullName() + "\n" +  // Use getFullName()
+                           "Email: " + message.getEmail() + "\n" +
+                           "Phone: " + message.getPhoneNumber() + "\n" +
+                           "Message:\n\n" +
+                           message.getMessage() + "\n\n" +
+                           "Please follow up with the visitor at your earliest convenience.\n\n" +
+                           "Thank you!\n" +
+                           "Wildcat One Tap Team";
+
+        mailMessage.setText(emailBody);
         mailMessage.setReplyTo(message.getEmail());  // Set the Reply-To header
         mailSender.send(mailMessage);
     }
